@@ -2,12 +2,35 @@ import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
-} from '@tanstack/react-query';
-import { fetchNoteById } from '@/lib/api';
-import NoteDetailsClient from '@/app/notes/[id]/NoteDetails.client';
+} from "@tanstack/react-query";
+import { fetchNoteById } from "@/lib/api";
+import NoteDetailsClient from "@/app/notes/[id]/NoteDetails.client";
 
 interface NoteDetailsPageProps {
   params: Promise<{ id: string }>;
+}
+export async function generateMetadata({ params }: NoteDetailsPageProps) {
+  const { id } = await params;
+  const note = await fetchNoteById(Number(id));
+  const description =
+    note.content.length > 100
+      ? note.content.slice(0, 100) + "..."
+      : note.content;
+
+  return {
+    title: `Note: ${note.title}`,
+    description,
+    openGraph: {
+      title: `Note: ${note.title}`,
+      description,
+      url: `https://08-zustand-9zdaz665p-igors-projects-2fd4204a.vercel.app/notes/${note.id}`,
+      images: [
+        {
+          url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+        },
+      ],
+    },
+  };
 }
 
 export default async function NoteDetailsPage({
@@ -18,7 +41,7 @@ export default async function NoteDetailsPage({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['note', id],
+    queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
   });
 
