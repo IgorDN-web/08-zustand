@@ -8,6 +8,7 @@
   margin: 0px auto;
   padding: 0 16px 16px;
 }
+
 .title {
   font-size: 36px;
   font-weight: 700;
@@ -21,4 +22,5 @@
   color: #444444;
   line-height: 28px;
   margin-bottom: 16px;
+  text-align: center;
 }
