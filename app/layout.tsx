@@ -1,25 +1,32 @@
-import type { Metadata } from 'next';
-import { Roboto } from 'next/font/google';
-import './globals.css';
-import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-
+import type { Metadata } from "next";
+import { Roboto } from "next/font/google";
+import "./globals.css";
+import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import Header from "@/components/Header/Header";
+import Footer from "@/components/Footer/Footer";
 const roboto = Roboto({
-  weight: ['400', '700'],
-  subsets: ['latin'],
-  variable: '--font-roboto',
-  display: 'swap',
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-roboto",
+  display: "swap",
 });
-
 export const metadata: Metadata = {
-  title: 'NoteHub',
-  description: 'Create and manage notes easily with NoteHub — a powerful note-taking app with tags and filters.',
+  title: "NoteHub App - онлайн-замітки",
+  description:
+    "NoteHub App - це безкоштовний онлайн-сервіс для створення та зберігання заміток.",
   openGraph: {
-    title: 'NoteHub',
-    description: 'Create and manage notes easily with NoteHub — a powerful note-taking app with tags and filters.',
-    url: 'https://notehub-zustand.vercel.app', // заменишь на реальный URL после деплоя
-    images: ['https://ac.goit.global/fullstack/react/notehub-og-meta.jpg'],
+    title: "NoteHub App - онлайн-замітки",
+    description:
+      "NoteHub App - це безкоштовний онлайн-сервіс для створення та зберігання заміток.",
+    url: "https://08-zustand-git-main-pavlomarkovskyis-projects.vercel.app/",
+    images: [
+      {
+        url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+        width: 1200,
+        height: 630,
+        alt: "NoteHub",
+      },
+    ],
   },
 };
 
@@ -32,6 +39,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body className={roboto.variable}>
         <TanStackProvider>
           <Header />
