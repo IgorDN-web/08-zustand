@@ -1,13 +1,15 @@
+import type { Metadata } from "next";
 import NotesClient from "./Notes.client";
 import { fetchNotes } from "@/lib/api";
 
 interface PageProps {
-  params: Promise<{ slug?: string[] }>;
+  params: { slug: string[] };
 }
-export async function generateMetadata({ params }: PageProps) {
-  const { slug } = await params;
-  const tag = slug?.[0] ?? "All";
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const tag = params.slug?.[0] ?? "All";
   const capitalizedTag = tag.charAt(0).toUpperCase() + tag.slice(1);
+
   return {
     title: `${capitalizedTag} – Notes | NoteHub`,
     description: `Notes list with tag "${capitalizedTag}" in NoteHub.`,
@@ -28,9 +30,7 @@ export async function generateMetadata({ params }: PageProps) {
 }
 
 export default async function NotesPage({ params }: PageProps) {
-  const { slug } = await params;
-
-  const tag = slug?.[0] ?? "All";
+  const tag = params.slug?.[0] ?? "All";
 
   const initialData = await fetchNotes({
     page: 1,
