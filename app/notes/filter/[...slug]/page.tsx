@@ -3,13 +3,14 @@ import NotesClient from "./Notes.client";
 import { fetchNotes } from "@/lib/api";
 
 interface PageProps {
-  params: { slug: string[] };
+  params: Promise<{ slug: string[] }>; // params теперь Promise
 }
 
 export async function generateMetadata(
   { params }: PageProps
 ): Promise<Metadata> {
-  const tag = params.slug?.[0] ?? "All";
+  const { slug } = await params; // ожидаем Promise
+  const tag = slug?.[0] ?? "All";
   const capitalizedTag = tag.charAt(0).toUpperCase() + tag.slice(1);
 
   return {
@@ -32,7 +33,8 @@ export async function generateMetadata(
 }
 
 export default async function NotesPage({ params }: PageProps) {
-  const tag = params.slug?.[0] ?? "All";
+  const { slug } = await params; // тоже ожидаем Promise
+  const tag = slug?.[0] ?? "All";
 
   const initialData = await fetchNotes({
     page: 1,
