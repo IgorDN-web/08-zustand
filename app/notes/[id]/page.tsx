@@ -1,20 +1,20 @@
-import type { Metadata } from "next";
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api";
-import NoteDetailsClient from "./NoteDetails.client";
+import NoteDetailsClient from "@/app/notes/[id]/NoteDetails.client";
+import { Metadata } from "next";
 
 interface NoteDetailsPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
-
-export async function generateMetadata(
-  { params }: NoteDetailsPageProps
-): Promise<Metadata> {
-  const note = await fetchNoteById(Number(params.id));
+export async function generateMetadata({
+  params,
+}: NoteDetailsPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const note = await fetchNoteById(Number(id));
   const description =
     note.content.length > 100
       ? note.content.slice(0, 100) + "..."
@@ -26,13 +26,10 @@ export async function generateMetadata(
     openGraph: {
       title: `Note: ${note.title}`,
       description,
-      url: `https://08-zustand-9zdaz665p-igors-projects-2fd4204a.vercel.app/notes/${note.id}`,
+      url: `https://08-zustand-3u212ijf9-igors-projects-2fd4204a.vercel.app/notes/${note.id}`,
       images: [
         {
           url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
-          width: 1200,
-          height: 630,
-          alt: "NoteHub Preview",
         },
       ],
     },
@@ -42,7 +39,8 @@ export async function generateMetadata(
 export default async function NoteDetailsPage({
   params,
 }: NoteDetailsPageProps) {
-  const id = Number(params.id);
+  const { id: idStr } = await params;
+  const id = Number(idStr);
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
