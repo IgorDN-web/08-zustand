@@ -11,10 +11,14 @@ interface NoteDetailsPageProps {
   params: { id: string };
 }
 
-export async function generateMetadata({ params }: NoteDetailsPageProps): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: NoteDetailsPageProps
+): Promise<Metadata> {
   const note = await fetchNoteById(Number(params.id));
   const description =
-    note.content.length > 100 ? note.content.slice(0, 100) + "..." : note.content;
+    note.content.length > 100
+      ? note.content.slice(0, 100) + "..."
+      : note.content;
 
   return {
     title: `Note: ${note.title}`,
@@ -26,13 +30,18 @@ export async function generateMetadata({ params }: NoteDetailsPageProps): Promis
       images: [
         {
           url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+          width: 1200,
+          height: 630,
+          alt: "NoteHub Preview",
         },
       ],
     },
   };
 }
 
-export default async function NoteDetailsPage({ params }: NoteDetailsPageProps) {
+export default async function NoteDetailsPage({
+  params,
+}: NoteDetailsPageProps) {
   const id = Number(params.id);
   const queryClient = new QueryClient();
 

@@ -6,7 +6,9 @@ interface PageProps {
   params: { slug: string[] };
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: PageProps
+): Promise<Metadata> {
   const tag = params.slug?.[0] ?? "All";
   const capitalizedTag = tag.charAt(0).toUpperCase() + tag.slice(1);
 
